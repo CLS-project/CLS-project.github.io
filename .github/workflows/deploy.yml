@@ -29,6 +29,12 @@ jobs:
         run: npm install -g pnpm
       - name: Install dependencies
         run: pnpm install
+      - name: Debug File Access
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Checking publications.bib:"
+          find . -name publications.bib
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         with:
