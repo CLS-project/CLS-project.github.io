@@ -12,16 +12,13 @@ import { DATE } from '../constants/dates'
 import { EXPERIENCE } from '../constants/projects'
 import { years } from '../utils/years'
 
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+//import { fileURLToPath } from 'url';
+//import { dirname } from 'path';
+//const __filename = fileURLToPath(import.meta.url);
+//const __dirname = dirname(__filename);
+//const bibFilePath = `${__dirname}/../assets/publications.bib`; 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const bibFilePath = `${__dirname}/../assets/publications.bib`; 
-
-// const bibFilePath = '../assets/publications.bib'; // Update this path to your .bib file
-// const bibContent = readFileSync(bibFilePath, 'utf-8'); // Read the .bib file content
-// const publications = parseBibtex(bibContent); // Parse the .bib content
+const bibFilePath = '../assets/publications.bib'; // Update this path to your .bib file
 
 // Function to load and parse the .bib file
 const loadBibFile = () => {
