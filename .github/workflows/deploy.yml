@@ -18,6 +18,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+        
       - name: CLS-project
         uses: actions/checkout@v4
       - name: Install, build, and upload your site
