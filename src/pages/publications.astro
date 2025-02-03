@@ -1,0 +1,128 @@
+---
+import { Image } from 'astro:assets'
+import { Icon } from 'astro-icon/components'
+import { readFileSync } from 'fs'; // Import the file system module
+// import pkg from '@retorquere/bibtex-parser'; // Import the entire package
+// const { parseBibtex } = pkg.default; // Destructure the parseBibtex function
+import BibtexParser from '@retorquere/bibtex-parser';
+import Layout from '../layouts/Layout.astro'
+import aboutImg from '../assets/photos/about.jpg'
+import ccpImg from '../assets/aws-ccp.png'
+import { DATE } from '../constants/dates'
+import { EXPERIENCE } from '../constants/projects'
+import { years } from '../utils/years'
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const bibFilePath = `${__dirname}/../assets/publications.bib`; 
+
+// const bibFilePath = '../assets/publications.bib'; // Update this path to your .bib file
+// const bibContent = readFileSync(bibFilePath, 'utf-8'); // Read the .bib file content
+// const publications = parseBibtex(bibContent); // Parse the .bib content
+
+// Function to load and parse the .bib file
+const loadBibFile = () => {
+  const bibFileContent = readFileSync(bibFilePath, 'utf8');
+  const parsedBib = BibtexParser.parse(bibFileContent); // Use the parse function directly
+
+  // Map the parsed entries into a structured format
+  return parsedBib.entries.map(entry => ({
+    type: entry.entryType,
+    citationKey: entry.citationKey,
+    fields: entry.fields,
+  }));
+};
+
+const publications = loadBibFile();
+const signature = `Thank you for your time.
+© ${new Date().getFullYear()} - CLS project`
+---
+
+<Layout title="Publications">
+    <div class="publications-container">
+        <h1 class="title">Publications</h1>
+        <ul class="publications-list">
+            <ul class="publications-list">
+                {publications.map(pub => (
+                    <li class="publication-item">
+                        <h2 class="publication-title">
+                            {pub.fields.adsurl ? (
+                                <a href={pub.fields.adsurl} target="_blank" class="publication-link">{pub.fields.title}</a>
+                            ) : (
+                                pub.fields.title
+                            )}
+                        </h2>
+                        <p class="publication-authors">
+                            {pub.fields.author.map((author, index) => {
+                                const fullName = [author.prefix, author.firstName, author.lastName].filter(Boolean).join(' ');
+                                return (
+                                    <span key={index}>
+                                        {fullName}{index < pub.fields.author.length - 1 ? ', ' : ''}
+                                    </span>
+                                );
+                            })}
+                        </p>
+                        <p class="publication-info">
+                            {pub.fields.year} - {pub.fields.journal}, {pub.fields.archiveprefix}: {pub.fields.eprint}
+                        </p>
+                    </li>
+                ))}
+            </ul>
+        </ul>
+    </div>
+</Layout>
+
+<style>
+.publications-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.title {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.publications-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.publication-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: box-shadow 0.3s;
+}
+
+.publication-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.publication-title {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.publication-authors,
+.publication-year {
+    margin: 5px 0;
+}
+
+.publication-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.publication-link:hover {
+    text-decoration: underline;
+}
+</style>
