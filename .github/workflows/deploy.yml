@@ -31,15 +31,22 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
-
-      - name: Install Sharp
         run: |
-          pnpm add sharp
           pnpm install
+          pnpm add sharp --save
+
+      - name: Configure Sharp
+        run: |
+          # Ensure Sharp is properly configured
+          pnpm sharp --version
+          pnpm sharp --info
 
       - name: Build
-        run: pnpm astro build
+        run: |
+          # Clean build
+          rm -rf .astro
+          rm -rf dist
+          pnpm astro build
 
   deploy:
     needs: build
