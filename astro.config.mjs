@@ -8,6 +8,7 @@ import svelte from '@astrojs/svelte'
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.CLS-project.github.io',
+  outDir: './dist',
   integrations: [
     tailwind(),
     icon({
