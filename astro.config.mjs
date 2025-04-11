@@ -34,5 +34,10 @@ export default defineConfig({
     sitemap(),
     robotsTxt(),
     svelte()
-  ]
+  ],
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp'
+    }
+  }
 })
