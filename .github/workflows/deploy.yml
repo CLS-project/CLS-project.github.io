@@ -38,18 +38,8 @@ jobs:
           rm -rf .astro dist
           npm run build
 
-      - name: Remove .lock files  # ✅ New step to fix deployment issue
-        run: find dist -name ".lock" -type f -delete
-
-      <!-- - name: Validate build output
-        run: |
-          # Check for symlinks or hard links
-          find dist -type l && echo "Symlinks detected!" && exit 1
-          echo "No symlinks detected"
-          du -sh dist -->
-
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
           path: dist
