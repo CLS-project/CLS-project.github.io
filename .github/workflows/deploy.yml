@@ -21,18 +21,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install PNPM
-        run: npm install -g pnpm
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
         run: |
-          pnpm install
+          npm install
           npm install --platform=linux --arch=x64 sharp@0.32.6 --save
 
       - name: Verify Sharp Installation
@@ -47,7 +44,7 @@ jobs:
           # Clean build
           rm -rf .astro
           rm -rf dist
-          pnpm astro build
+          npm run build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
