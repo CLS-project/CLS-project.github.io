@@ -33,13 +33,14 @@ jobs:
       - name: Install dependencies
         run: |
           pnpm install
-          pnpm add sharp --save
+          pnpm add sharp@0.32.6 --save
 
-      - name: Configure Sharp
+      - name: Verify Sharp Installation
         run: |
-          # Ensure Sharp is properly configured
-          pnpm sharp --version
-          pnpm sharp --info
+          # Verify Sharp is installed
+          node -e "require('sharp')"
+          # Check if Sharp can be imported
+          echo "Sharp is installed and ready to use"
 
       - name: Build
         run: |
