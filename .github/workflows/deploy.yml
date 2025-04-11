@@ -53,6 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: github-pages # This name is important - it must be "github-pages"
+          path: dist
 
   deploy:
     needs: build
