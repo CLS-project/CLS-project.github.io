@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           pnpm install
-          pnpm add sharp@0.32.6 --save
+          npm install --platform=linux --arch=x64 sharp@0.32.6 --save
 
       - name: Verify Sharp Installation
         run: |
