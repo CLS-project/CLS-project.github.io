@@ -9,7 +9,7 @@ interface Props {
 const { href, title, extraClass, description } = Astro.props
 ---
 
-<div class={`flex group w-full md:w-[240px] lg:w-[314px] rounded bg-gradient-to-tr from-blue-800 via-green-800 to-yellow-800 shadow-button hover:animate-textHue focus:animate-textHue ${extraClass || ''}`}>
+<div class={`flex group w-full md:w-[100px] lg:w-[200px] rounded bg-gradient-to-tr from-blue-800 via-green-800 to-yellow-800 shadow-button hover:animate-textHue focus:animate-textHue ${extraClass || ''}`}>
   <a href={href} class="flex flex-grow w-full h-full justify-center rounded bg-neutral-800 shadow-button transition duration-300 hover:bg-opacity-70 focus:bg-opacity-70">
     <div class="flex flex-col p-4 rounded justify-center items-center">
       <div class="flex md:flex-col items-center">

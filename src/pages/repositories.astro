@@ -1,113 +1,60 @@
 ---
-import { Image } from 'astro:assets'
 import Layout from '../layouts/Layout.astro'
-import Section from '../components/Section.astro'
-import skillsImg from '../assets/photos/skills.jpg'
-import aboutImg from '../assets/about.png'
-import experienceImg from '../assets/experience.png'
-import { fetchSkills } from '../api/skills'
-import ScrollFadeIn from '../components/ScrollFadeIn.astro'
-import LinkBox from '../components/LinkBox.astro'
-import { github_embed_repo } from '../utils/github_embed_repo.min.js'
 
-const skills = await fetchSkills()
+const res = await fetch('https://api.github.com/orgs/CLS-project/repos?per_page=100', {
+  headers: { 'User-Agent': 'CLS-website' }
+})
+if (!res.ok) {
+  throw new Error(`GitHub API error: ${res.status}`)
+}
+type Repo = {
+  name: string
+  full_name: string
+  html_url: string
+  description: string | null
+  stargazers_count: number
+  forks_count: number
+  language: string | null
+  updated_at: string
+  archived: boolean
+}
+
+const repos = (await res.json()) as Repo[]
+
+const visibleRepos: Repo[] = repos
+  .filter((r: Repo) => !r.archived)
+  .sort((a: Repo, b: Repo) => b.stargazers_count - a.stargazers_count)
 ---
 
 <Layout title="Repositories of CLS">
+  <section class="space-y-6 w-full mx-auto px-10 md:px-24 my-40 max-w-screen-xl">
+    <p>
+      All CLS repositories are at
+      <a href="https://github.com/CLS-project" target="_blank" class="underline">https://github.com/CLS-project</a>.
+    </p>
 
-    <Section title="Repositories of CLS">
-        All CLS repositories are at: <a href="https://github.com/CLS-project" target="_blank" class="underline">https://github.com/CLS-project</a>.
-        <!--<script src="../utils/github_embed_repo.min.js"></script>-->
-        <script>
-            github_embed_repo.default('repo-details', 'cls-project', 'CLS-project.github.io', {
-                showProfile: true,
-                showStats: true,
-                theme: 'dark',
-                statsToShow: ['stars', 'forks', 'watchers', 'issues', 'pull_requests', 'contributors'],
-                component: 'repo'
-            });
-        </script>
-
-        <!--<iframe src="https://github.com/CLS-project">-->
-            <!--<b>IFrame is available here</b>-->
-        <!--</iframe>-->
-    </Section>
-
-    <Section title="">
-        <object type="image/svg+xml" data="https://gh-card.dev/repos/cls-project/CLS-project.github.io.svg?link_target=_top"></object>
-
-    <!--<div class="github-card" data-user="CLS-project" data-repo="CLS-project.github.io"> </div>-->
-    <!--<script src="https://cdn.jsdelivr.net/gh/weiguangcui/github-cards@master/jsdelivr/widget.js"></script>-->
-
-
-    <!--<div id="github-card" data-user="CLS-project" data-height="150px" data-width="350px"></div>-->
-    <!--<script src="https://cdn.jsdelivr.net/gh/weiguangcui/github-cards@master/jsdelivr/widget.js"></script>-->
-    </Section>
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 gap-6">
+      {visibleRepos.map((repo: Repo) => (
+        <a
+          href={repo.html_url}
+          target="_blank"
+          rel="noreferrer"
+          class="block rounded-lg border border-white/10 bg-neutral-900 hover:bg-neutral-800 transition p-4 h-full"
+        >
+          <h3 class="text-lg font-semibold break-words">{repo.name}</h3>
+          {repo.description && (
+            <p class="mt-2 text-sm text-neutral-400">
+              {repo.description}
+            </p>
+          )}
+          <div class="mt-3 text-xs text-neutral-400 flex flex-wrap gap-4">
+            <span>⭐ {repo.stargazers_count}</span>
+            <span>🍴 {repo.forks_count}</span>
+            {repo.language && <span>💻 {repo.language}</span>}
+            <span>🕒 {new Date(repo.updated_at).toLocaleDateString()}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
 </Layout>
-
-<!--<Layout title='Skills'>-->
-<!--  <Section title='skills'>-->
-<!--    <ScrollFadeIn stayShown>-->
-<!--      <div-->
-<!--        class='my-10 flex flex-col lg:flex-row gap-10 rounded-xl justify-center items-center'-->
-<!--      >-->
-<!--        <Image-->
-<!--          class='flex-shrink-0 w-32 h-32 mx-auto rounded-full md:w-52 md:h-52 object-cover object-center'-->
-<!--          src={skillsImg}-->
-<!--          alt='skills'-->
-<!--        />-->
-<!--        <div class='items-center'>-->
-<!--          <p class='text-left font-bold'>-->
-<!--            You'll find me constantly looking for new technologies to learn,-->
-<!--            explore and experiment with. One of the best parts of the tech-->
-<!--            landscape is that it's changing all the time, so it never gets boring.-->
-<!--          </p>-->
-<!--          <p class='text-left mt-5'>-->
-<!--            As a Full Stack Developer, I constantly seek out new technologies and-->
-<!--            techniques to learn and explore. I have experience in both front-end-->
-<!--            and back-end development, and I am always adapting and adding to my-->
-<!--            knowledge. Thanks to my experience, I am able to quickly adapt to new-->
-<!--            technologies and frameworks. It's generally easy for me to join a new-->
-<!--            project and learn the stack being used in a short amount of time, so-->
-<!--            only looking at the technologies I used in the past may prove somewhat-->
-<!--            limiting.-->
-<!--            <br /><br />-->
-<!--            Below are some of the technologies I've worked with or interacted-->
-<!--            with in the past.-->
-<!--          </p>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div class='my-10 flex flex-wrap gap-2 md:gap-y-2 md:gap-3'>-->
-<!--        {-->
-<!--          skills.map(({ name, image }) => (-->
-<!--            <div class='flex flex-col'>-->
-<!--              <img-->
-<!--                src={image}-->
-<!--                alt={name}-->
-<!--                class='rounded-xl object-cover w-7 h-7 object-[-3px] md:w-12 md:h-12 md:object-[-5px]'-->
-<!--                title={name}-->
-<!--              />-->
-<!--            </div>-->
-<!--          ))-->
-<!--        }-->
-<!--      </div>-->
-<!--      <p class='text-justify mt-5 text-sm text-neutral-400'>-->
-<!--        {skills.map(({ name }) => name).join(', ') + '.'}-->
-<!--      </p>-->
-<!--      <p class="text-left mt-5">-->
-<!--        Don't find something you're looking for? Check out my GitHub projects or ask me directly!-->
-<!--      </p>-->
-<!--    </ScrollFadeIn>-->
-<!--  </Section>-->
-<!--  <section class="flex my-40 justify-center items-center">-->
-<!--    <ScrollFadeIn class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10 max-w-5xl mx-6">-->
-<!--      <LinkBox href="/about" title="ABOUT" description="Get to know my journey, my love for coding, and the things that keep me going. Learn more about the person behind the code.">-->
-<!--        <Image src={aboutImg} class="w-20 h-20 md:w-44 md:h-44" alt="About" />-->
-<!--      </LinkBox>-->
-<!--      <LinkBox href="/experience" title="EXPERIENCE" extraClass="delay-100" description="From professional milestones to personal projects. Delve into my professional journey and see what I've been up to.">-->
-<!--        <Image src={experienceImg} class="w-20 h-20 md:w-44 md:h-44" alt="Experience" />-->
-<!--      </LinkBox>-->
-<!--    </ScrollFadeIn>-->
-<!--  </section>-->
-<!--</Layout>-->

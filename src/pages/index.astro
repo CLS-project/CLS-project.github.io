@@ -1,23 +1,25 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro'
-import Nunogois from '../components/CLS.astro'
+import CLS from '../components/CLS.astro'
 import ScrollFadeIn from '../components/ScrollFadeIn.astro';
 import LinkBox from '../components/LinkBox.astro';
 import aboutImg from '../assets/about.png'
+import dataImg from '../assets/data.png'
 import skillsImg from '../assets/skills.png'
-import experienceImg from '../assets/experience.png'
+import memberImg from '../assets/member.png'
+import publicationsImg from '../assets/publication.png'
 import CLSImg from '../assets/logos/CLS.png'
 import Recent from '../components/Recent.astro';
 ---
 
 <Layout home>
-  <section
-    class='flex justify-center items-center text-center min-h-screen h-px'
-  >
-    <div>
+  <section class="relative flex justify-center items-center text-center min-h-screen overflow-hidden">
+    <div class="absolute inset-0 bg-contain bg-center bg-no-repeat" style={`background-image: url('${CLSImg.src}')`}></div>
+    <div class="absolute inset-0 bg-black/75"></div>
+    <div class="relative">
       <div class='animate-fadeInDown'>
-        <Nunogois />
+        <CLS />
       </div>
       <hr class='my-5 border-none h-px bg-light-gray' />
       <h2 class='text-xl sm:text-4xl lg:text-5xl font-thin animate-fadeInUp'>
@@ -37,15 +39,26 @@ import Recent from '../components/Recent.astro';
   </section>
   <Recent />
   <section class="flex mt-20 mb-40 justify-center items-center">
-    <ScrollFadeIn class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10 max-w-5xl mx-6">
-      <LinkBox href="/about" title="ABOUT" description="Get to know more about the CLS project behind the code.">
-        <Image src={aboutImg} class="w-20 h-20 md:w-44 md:h-44" alt="About" />
+    <ScrollFadeIn class="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-10 max-w-5xl mx-6">
+      <LinkBox href="/about" title="ABOUT"> 
+      <!-- </LinkBox> description="Get to know more about the CLS project behind the code."> -->
+        <Image src={aboutImg} class="w-10 h-10 md:w-44 md:h-44" alt="About" />
       </LinkBox>
-      <LinkBox href="/repositories" title="PACKAGES" extraClass="delay-100" description="Packages for CLS.">
+      <LinkBox href="/repositories" title="REPOSITORIES" extraClass="delay-100">
+      <!-- </LinkBox> description="Repositories for CLS."> -->
         <Image src={skillsImg} class="w-20 h-20 md:w-44 md:h-44" alt="Skills" />
       </LinkBox>
-      <LinkBox href="/data" title="EXPERIENCE" extraClass="delay-200" description="Date for and from CLS.">
-        <Image src={experienceImg} class="w-20 h-20 md:w-44 md:h-44" alt="Experience" />
+      <LinkBox href="/data" title="DATA" extraClass="delay-200">
+      <!-- </LinkBox> description="Date for and from CLS."> -->
+        <Image src={dataImg} class="w-20 h-20 md:w-44 md:h-44" alt="Data" />
+      </LinkBox>
+      <LinkBox href="/member" title="MEMBERS" extraClass="delay-300">
+      <!-- </LinkBox> description="Members of CLS."> -->
+        <Image src={memberImg} class="w-20 h-20 md:w-44 md:h-44" alt="Members" />
+      </LinkBox>
+      <LinkBox href="/publications" title="PUBLICATIONS" extraClass="delay-400">
+      <!-- </LinkBox> description="Publications of CLS."> -->
+        <Image src={publicationsImg} class="w-20 h-20 md:w-44 md:h-44" alt="Publications" />
       </LinkBox>
     </ScrollFadeIn>
   </section>
